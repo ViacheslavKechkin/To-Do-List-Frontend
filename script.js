@@ -1,5 +1,4 @@
-
-let allTasks = JSON.parse(localStorage.getItem('tasks')) || [];
+let allTasks = [];
 let valueInput = '';
 let input = null;
 let activeEditTask = null;
@@ -15,8 +14,7 @@ window.onload = async function init() {
   render();
 }
 
-
-onClickButton = async () => {
+const onClickButton = async () => {
 
   if (input.value != '') {
     allTasks.push({
@@ -36,17 +34,16 @@ onClickButton = async () => {
     });
     let result = await response.json();
     allTasks = result.data;
-    localStorage.setItem('tasks', JSON.stringify(allTasks));
     valueInput = '';
     input.value = '';
     render();
   }
 }
-updateValue = (event) => {
+const updateValue = (event) => {
   valueInput = event.target.value;
 }
 
-render = () => {
+const render = () => {
   const content = document.getElementById('content-page');
   while (content.firstChild) {
     content.removeChild(content.firstChild);
@@ -64,6 +61,7 @@ render = () => {
     checkbox.className = 'task-checkbox';
     checkbox.onchange = function () {
       onChangeCheckbox(index);
+      render();
     };
     container.appendChild(checkbox);
 
@@ -80,6 +78,7 @@ render = () => {
       text.className = item.isCheck ? 'text-task done-text' : 'text-task';
       container.appendChild(text);
     }
+
     if (!item.isCheck) {
       if (index === activeEditTask) {
         const imageDone = document.createElement('img');
@@ -109,8 +108,10 @@ render = () => {
   });
 }
 
-onChangeCheckbox = async (index) => {
-  allTasks[index].isCheck = !allTasks[index].isCheck;
+const onChangeCheckbox = async (index) => {
+  let elArr = allTasks[index];
+  let { isCheck, text, id } = elArr;
+  isCheck = !isCheck;
 
   const response = await fetch('http://localhost:8000/updateTask', {
     method: 'PATCH',
@@ -119,18 +120,17 @@ onChangeCheckbox = async (index) => {
       'Access-Control-Allow-Origin': '*'
     },
     body: JSON.stringify({
-      id: allTasks[index].id,
-      text: allTasks[index].text,
-      isCheck: allTasks[index].isCheck
+      id: id,
+      text: text,
+      isCheck: isCheck
     })
   });
   let result = await response.json();
   allTasks = result.data;
-  localStorage.setItem('tasks', JSON.stringify(allTasks));
   render();
 }
-deleteTask = async (index, itemIdDel) => {
-  allTasks.splice(index, 1);
+
+const deleteTask = async (index, itemIdDel) => {
   const response = await fetch(`http://localhost:8000/deleteTask?id=${itemIdDel}`, {
     method: 'DELETE',
     headers: {
@@ -140,12 +140,13 @@ deleteTask = async (index, itemIdDel) => {
   });
   let result = await response.json();
   allTasks = result.data;
-  localStorage.setItem('tasks', JSON.stringify(allTasks));
   render();
 }
 
-updateTaskText = async (event) => {
-  allTasks[activeEditTask].text = event.target.value;
+const updateTaskText = async (event) => {
+  let [newElArr] = allTasks;
+  let { text, id } = newElArr;
+  text = event.target.value;
   const response = await fetch('http://localhost:8000/updateTask', {
     method: 'PATCH',
     headers: {
@@ -153,18 +154,17 @@ updateTaskText = async (event) => {
       'Access-Control-Allow-Origin': '*'
     },
     body: JSON.stringify({
-      id: allTasks[activeEditTask].id,
-      text: allTasks[activeEditTask].text,
+      id: id,
+      text: text,
       isCheck: false
     })
   });
   let result = await response.json();
   allTasks = result.data;
-  localStorage.setItem('tasks', JSON.stringify(allTasks));
   render();
 }
 
-doneEditTask = () => {
+const doneEditTask = () => {
   activeEditTask = null;
   render();
 }
