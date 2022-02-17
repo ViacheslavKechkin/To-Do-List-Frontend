@@ -1,0 +1,54 @@
+
+body {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+button {
+  margin: 10px 0 10px 0;
+  width: 185px;
+  height: 30px;
+  background-color: rgb(255, 153, 0);
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 0 5px gray;
+}
+h1 {
+  font-size: 45px;
+  text-align: center;
+  color: rgb(231, 99, 99);
+}
+img {
+  height: 40px;
+  width: 40px;
+  margin-left: 10px;
+  cursor: pointer;
+}
+#add-task {
+  height: 30px;
+  color: blue;
+}
+.task-checkbox {
+  width: 25px;
+  height: 25px;
+}
+.text-task {
+  font-size: 35px;
+  margin: 0 0 0 10px;
+}
+
+#content-page {
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+}
+
+.task-container {
+  display: flex;
+  align-items: center;
+}
+.done-text {
+  opacity: 0.2;
+  text-decoration: line-through;
+}
