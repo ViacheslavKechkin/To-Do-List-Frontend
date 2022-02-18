@@ -15,7 +15,6 @@ window.onload = async () => {
 }
 
 const onClickButton = async () => {
-
   if (input.value != '') {
     const response = await fetch('http://localhost:8000/createTask', {
       method: 'POST',
@@ -55,10 +54,7 @@ const render = () => {
     checkbox.type = 'checkbox';
     checkbox.checked = item.isCheck;
     checkbox.className = 'task-checkbox';
-    checkbox.onchange = () => {
-      onChangeCheckbox(index);
-      render();
-    };
+    checkbox.onchange = () => { onChangeCheckbox(index); render(); };
     container.appendChild(checkbox);
 
     if (index === activeEditTask) {
@@ -79,24 +75,19 @@ const render = () => {
       if (index === activeEditTask) {
         const imageDone = document.createElement('img');
         imageDone.src = 'img/done.png';
-        imageDone.onclick = () => {
-          doneEditTask();
-        };
+        imageDone.onclick = () => { doneEditTask(); };
         container.appendChild(imageDone);
       } else {
         const imageEdit = document.createElement('img');
         imageEdit.src = 'img/edit.png';
-        imageEdit.onclick = () => {
-          activeEditTask = index;
-          render();
-        }
+        imageEdit.onclick = () => { activeEditTask = index; render(); }
         container.appendChild(imageEdit);
       }
     }
     const imageDelete = document.createElement('img');
     imageDelete.src = 'img/delete.png';
     imageDelete.onclick = () => {
-      let itemIdDel = item.id;
+      const itemIdDel = item.id;
       deleteTask(index, itemIdDel);
     }
     container.appendChild(imageDelete);
@@ -105,8 +96,8 @@ const render = () => {
 }
 
 const onChangeCheckbox = async (index) => {
-  let elArr = allTasks[index];
-  let { isCheck, text, id } = elArr;
+  const elementArr = allTasks[index];
+  let { isCheck, text, id } = elementArr;
   isCheck = !isCheck;
 
   const response = await fetch('http://localhost:8000/updateTask', {
@@ -117,7 +108,6 @@ const onChangeCheckbox = async (index) => {
     },
     body: JSON.stringify({
       id: id,
-      text: text,
       isCheck: isCheck
     })
   });
@@ -140,8 +130,8 @@ const deleteTask = async (index, itemIdDel) => {
 }
 
 const updateTaskText = async (event) => {
-  let newElArr = allTasks[activeEditTask];
-  let { id, text } = newElArr;
+  const elementArr = allTasks[activeEditTask];
+  let { id, text } = elementArr;
   text = event.target.value;
   const response = await fetch('http://localhost:8000/updateTask', {
     method: 'PATCH',
@@ -152,7 +142,6 @@ const updateTaskText = async (event) => {
     body: JSON.stringify({
       id: id,
       text: text,
-      isCheck: false
     })
   });
   let result = await response.json();
