@@ -3,7 +3,7 @@ let valueInput = '';
 let input = null;
 let activeEditTask = null;
 
-window.onload = async function init() {
+window.onload = async () => {
   input = document.getElementById('add-task');
   input.addEventListener('change', updateValue);
   const response = await fetch('http://localhost:8000/allTasks', {
@@ -17,10 +17,6 @@ window.onload = async function init() {
 const onClickButton = async () => {
 
   if (input.value != '') {
-    allTasks.push({
-      text: valueInput,
-      isCheck: false
-    });
     const response = await fetch('http://localhost:8000/createTask', {
       method: 'POST',
       headers: {
@@ -59,7 +55,7 @@ const render = () => {
     checkbox.type = 'checkbox';
     checkbox.checked = item.isCheck;
     checkbox.className = 'task-checkbox';
-    checkbox.onchange = function () {
+    checkbox.onchange = () => {
       onChangeCheckbox(index);
       render();
     };
@@ -83,14 +79,14 @@ const render = () => {
       if (index === activeEditTask) {
         const imageDone = document.createElement('img');
         imageDone.src = 'img/done.png';
-        imageDone.onclick = function () {
+        imageDone.onclick = () => {
           doneEditTask();
         };
         container.appendChild(imageDone);
       } else {
         const imageEdit = document.createElement('img');
         imageEdit.src = 'img/edit.png';
-        imageEdit.onclick = function () {
+        imageEdit.onclick = () => {
           activeEditTask = index;
           render();
         }
@@ -99,7 +95,7 @@ const render = () => {
     }
     const imageDelete = document.createElement('img');
     imageDelete.src = 'img/delete.png';
-    imageDelete.onclick = function () {
+    imageDelete.onclick = () => {
       let itemIdDel = item.id;
       deleteTask(index, itemIdDel);
     }
@@ -144,8 +140,8 @@ const deleteTask = async (index, itemIdDel) => {
 }
 
 const updateTaskText = async (event) => {
-  let [newElArr] = allTasks;
-  let { text, id } = newElArr;
+  let newElArr = allTasks[activeEditTask];
+  let { id, text } = newElArr;
   text = event.target.value;
   const response = await fetch('http://localhost:8000/updateTask', {
     method: 'PATCH',
