@@ -34,9 +34,8 @@ const onClickButton = async () => {
     render();
   }
 }
-const updateValue = (event) => {
-  valueInput = event.target.value;
-}
+
+const updateValue = (event) => valueInput = event.target.value;
 
 const render = () => {
   const content = document.getElementById('content-page');
@@ -54,7 +53,7 @@ const render = () => {
     checkbox.type = 'checkbox';
     checkbox.checked = item.isCheck;
     checkbox.className = 'task-checkbox';
-    checkbox.onchange = () => { onChangeCheckbox(index); render(); };
+    checkbox.onchange = () => onChangeCheckbox(index);
     container.appendChild(checkbox);
 
     if (index === activeEditTask) {
@@ -75,21 +74,19 @@ const render = () => {
       if (index === activeEditTask) {
         const imageDone = document.createElement('img');
         imageDone.src = 'img/done.png';
-        imageDone.onclick = () => { doneEditTask(); };
+        imageDone.onclick = () => doneEditTask();
         container.appendChild(imageDone);
       } else {
         const imageEdit = document.createElement('img');
         imageEdit.src = 'img/edit.png';
-        imageEdit.onclick = () => { activeEditTask = index; render(); }
+        imageEdit.onclick = () => { activeEditTask = index; render() }
         container.appendChild(imageEdit);
       }
     }
+
     const imageDelete = document.createElement('img');
     imageDelete.src = 'img/delete.png';
-    imageDelete.onclick = () => {
-      const itemIdDel = item.id;
-      deleteTask(index, itemIdDel);
-    }
+    imageDelete.onclick = () => { let itemIdDel = item.id; deleteTask(index, itemIdDel) };
     container.appendChild(imageDelete);
     content.appendChild(container);
   });
@@ -104,7 +101,6 @@ const onChangeCheckbox = async (index) => {
     method: 'PATCH',
     headers: {
       'Content-Type': 'application/json;charset=utf-8',
-      'Access-Control-Allow-Origin': '*'
     },
     body: JSON.stringify({
       id: id,
@@ -121,7 +117,6 @@ const deleteTask = async (index, itemIdDel) => {
     method: 'DELETE',
     headers: {
       'Content-Type': 'application/json;charset=utf-8',
-      'Access-Control-Allow-Origin': '*'
     },
   });
   let result = await response.json();
@@ -137,7 +132,6 @@ const updateTaskText = async (event) => {
     method: 'PATCH',
     headers: {
       'Content-Type': 'application/json;charset=utf-8',
-      'Access-Control-Allow-Origin': '*'
     },
     body: JSON.stringify({
       id: id,
@@ -149,7 +143,4 @@ const updateTaskText = async (event) => {
   render();
 }
 
-const doneEditTask = () => {
-  activeEditTask = null;
-  render();
-}
+const doneEditTask = () => activeEditTask = null;
