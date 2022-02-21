@@ -54,8 +54,7 @@ const render = () => {
     checkbox.checked = item.isCheck;
     checkbox.className = 'task-checkbox';
     checkbox.onchange = () => onChangeCheckbox(index);
-    container.appendChild(checkbox);
-
+    
     if (index === activeEditTask) {
       const inputTask = document.createElement('input');
       inputTask.type = 'text';
@@ -67,6 +66,7 @@ const render = () => {
       const text = document.createElement('p');
       text.innerText = item.text;
       text.className = item.isCheck ? 'text-task done-text' : 'text-task';
+      container.appendChild(checkbox);
       container.appendChild(text);
     }
 
@@ -86,15 +86,17 @@ const render = () => {
 
     const imageDelete = document.createElement('img');
     imageDelete.src = 'img/delete.png';
-    imageDelete.onclick = () => { let itemIdDel = item.id; deleteTask(index, itemIdDel) };
+    imageDelete.onclick = () => {
+      let itemIdDel = item.id;
+      deleteTask(index, itemIdDel);
+    }
     container.appendChild(imageDelete);
     content.appendChild(container);
   });
 }
 
 const onChangeCheckbox = async (index) => {
-  const elementArr = allTasks[index];
-  let { isCheck, text, id } = elementArr;
+  let { isCheck, text, id } = allTasks[index];
   isCheck = !isCheck;
 
   const response = await fetch('http://localhost:8000/updateTask', {
@@ -103,8 +105,8 @@ const onChangeCheckbox = async (index) => {
       'Content-Type': 'application/json;charset=utf-8',
     },
     body: JSON.stringify({
-      id: id,
-      isCheck: isCheck
+      id,
+      isCheck
     })
   });
   let result = await response.json();
@@ -134,8 +136,8 @@ const updateTaskText = async (event) => {
       'Content-Type': 'application/json;charset=utf-8',
     },
     body: JSON.stringify({
-      id: id,
-      text: text,
+      id,
+      text,
     })
   });
   let result = await response.json();
