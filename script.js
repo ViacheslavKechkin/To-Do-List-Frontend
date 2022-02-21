@@ -79,7 +79,10 @@ const render = () => {
       } else {
         const imageEdit = document.createElement('img');
         imageEdit.src = 'img/edit.png';
-        imageEdit.onclick = () => { activeEditTask = index; render() }
+        imageEdit.onclick = () => { 
+          activeEditTask = index; 
+          render();
+        }
         container.appendChild(imageEdit);
       }
     }
@@ -87,7 +90,7 @@ const render = () => {
     const imageDelete = document.createElement('img');
     imageDelete.src = 'img/delete.png';
     imageDelete.onclick = () => {
-      let itemIdDel = item.id;
+      const itemIdDel = item.id;
       deleteTask(index, itemIdDel);
     }
     container.appendChild(imageDelete);
@@ -127,8 +130,7 @@ const deleteTask = async (index, itemIdDel) => {
 }
 
 const updateTaskText = async (event) => {
-  const elementArr = allTasks[activeEditTask];
-  let { id, text } = elementArr;
+  let { id, text } = allTasks[activeEditTask];
   text = event.target.value;
   const response = await fetch('http://localhost:8000/updateTask', {
     method: 'PATCH',
