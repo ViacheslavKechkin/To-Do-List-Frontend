@@ -131,8 +131,6 @@ const deleteTask = async (index, itemIdDel) => {
 
 const updateTaskText = async (event) => {
   let { _id, text } = allTasks[activeEditTask];
-  console.log(allTasks[activeEditTask]);
-  console.log(_id);
   text = event.target.value;
   const response = await fetch('http://localhost:8000/updateTask', {
     method: 'PATCH',
