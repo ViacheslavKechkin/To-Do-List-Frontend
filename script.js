@@ -100,7 +100,6 @@ const render = () => {
 }
 const onChangeCheckbox = async (index) => {
   let { isCheck, text, _id } = allTasks[index];
-  const id = _id;
   isCheck = !isCheck;
 
   const response = await fetch('http://localhost:8000/updateTask', {
@@ -109,7 +108,7 @@ const onChangeCheckbox = async (index) => {
       'Content-Type': 'application/json;charset=utf-8',
     },
     body: JSON.stringify({
-      id,
+      _id,
       isCheck
     })
   });
@@ -132,7 +131,8 @@ const deleteTask = async (index, itemIdDel) => {
 
 const updateTaskText = async (event) => {
   let { _id, text } = allTasks[activeEditTask];
-  const id = _id;
+  console.log(allTasks[activeEditTask]);
+  console.log(_id);
   text = event.target.value;
   const response = await fetch('http://localhost:8000/updateTask', {
     method: 'PATCH',
@@ -140,7 +140,7 @@ const updateTaskText = async (event) => {
       'Content-Type': 'application/json;charset=utf-8',
     },
     body: JSON.stringify({
-      id,
+      _id,
       text,
     })
   });
