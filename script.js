@@ -42,6 +42,7 @@ const render = () => {
   while (content.firstChild) {
     content.removeChild(content.firstChild);
   }
+
   allTasks.sort((a, b) => a.isCheck > b.isCheck ? 1 : a.isCheck < b.isCheck ? -1 : 0);
 
   allTasks.map((item, index) => {
@@ -90,16 +91,16 @@ const render = () => {
     const imageDelete = document.createElement('img');
     imageDelete.src = 'img/delete.png';
     imageDelete.onclick = () => {
-      const itemIdDel = item.id;
+      const itemIdDel = item._id;
       deleteTask(index, itemIdDel);
     }
     container.appendChild(imageDelete);
     content.appendChild(container);
   });
 }
-
 const onChangeCheckbox = async (index) => {
-  let { isCheck, text, id } = allTasks[index];
+  let { isCheck, text, _id } = allTasks[index];
+  const id = _id;
   isCheck = !isCheck;
 
   const response = await fetch('http://localhost:8000/updateTask', {
@@ -130,7 +131,8 @@ const deleteTask = async (index, itemIdDel) => {
 }
 
 const updateTaskText = async (event) => {
-  let { id, text } = allTasks[activeEditTask];
+  let { _id, text } = allTasks[activeEditTask];
+  const id = _id;
   text = event.target.value;
   const response = await fetch('http://localhost:8000/updateTask', {
     method: 'PATCH',
@@ -146,5 +148,4 @@ const updateTaskText = async (event) => {
   allTasks = result.data;
   render();
 }
-
 const doneEditTask = () => activeEditTask = null;
