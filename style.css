@@ -34,19 +34,23 @@ img {
 }
 
 .task-checkbox {
-  width: 25px;
-  height: 25px;
+  min-width: 25px;
+  min-height: 25px;
 }
 
 .text-task {
-  font-size: 35px;
+  font-size: 25px;
   margin: 0 0 0 10px;
+  word-wrap: break-word;
+  width: 400px;
 }
 
 #content-page {
   display: flex;
   flex-direction: column;
-  align-items: left;
+  align-items: center;
+  gap: 10px;
+  width: 600px;
 }
 
 .task-container {
@@ -57,4 +61,45 @@ img {
 .done-text {
   opacity: 0.2;
   text-decoration: line-through;
+}
+
+@media screen and (max-width: 760px) {
+  #content-page {
+    width: 500px;
+  }
+
+  .text-task {
+    font-size: 15px;
+  }
+
+  img {
+    height: 20px;
+    width: 20px;
+    margin-left: 5px;
+  }
+
+  .task-checkbox {
+    min-width: 15px;
+    min-height: 15px;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  #content-page {
+    width: 400px;
+  }
+
+  .text-task {
+    width: 300px;
+  }
+}
+
+@media screen and (max-width: 400px) {
+  #content-page {
+    width: 270px;
+  }
+  
+  .text-task {
+    width: 170px;
+  }
 }
